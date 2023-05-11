@@ -1,0 +1,82 @@
+openapi: 3.0.1
+info:
+  title: ProgImage
+  description: "The API definition for progimage"
+  version: 1.0.0-alpha1
+servers:
+  - url: /api/v1
+paths:
+  /image:
+    post:
+      summary: upload image
+      description: upload image
+      operationId: uploadImage
+      requestBody:
+        content:
+          image/png:
+            schema:
+              type: string
+              format: binary
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artifact"
+        500:
+          description: internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /image/{imageID}:
+    get:
+      summary: download image
+      description: download image
+      operationId: downloadImage
+      parameters:
+        - name: imageID
+          in: path
+          description: ID of the image to be downloaded
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/octet-stream: {}
+        404:
+          description: image not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        500:
+          description: internal error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    Artifact:
+      type: object
+      properties:
+        digest:
+          type: string
+        id:
+          type: string
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
