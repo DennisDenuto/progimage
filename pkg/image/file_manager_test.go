@@ -2,6 +2,7 @@ package image_test
 
 import (
 	"bytes"
+	"github.com/progimage/pkg/events"
 	image2 "github.com/progimage/pkg/image"
 	"github.com/stretchr/testify/require"
 	"os"
@@ -12,7 +13,8 @@ import (
 
 func TestUpload(t *testing.T) {
 	baseDir := t.TempDir()
-	uploader := image2.NewLocalFileManager(baseDir, nil)
+	fs := image2.LocalFS{baseDir}
+	uploader := image2.NewFileManager(fs, events.NewInMemoryEvents(), &image2.IdGeneratorMemory{})
 
 	uploadResponse, err := uploader.Upload(image2.ImageRequest{
 		Name: "some-file",

@@ -18,10 +18,10 @@ type FileManager struct {
 	eventManager events2.FileEvents
 }
 
-func NewLocalFileManager(fs FS, em *events2.InMemoryEvents) *FileManager {
+func NewFileManager(fs FS, em *events2.InMemoryEvents, localIDGenerator UploadId) *FileManager {
 	return &FileManager{
 		fs:           fs,
-		uploadId:     &IdGeneratorMemory{},
+		uploadId:     localIDGenerator,
 		eventManager: em,
 	}
 }

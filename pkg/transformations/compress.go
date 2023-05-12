@@ -14,7 +14,12 @@ type CompressFile struct {
 func (c CompressFile) Transform(s []byte, metadata map[string]string) (io.Reader, string, error) {
 	c.Logger.Info("transforming: compressing image", "metadata", metadata)
 	var b bytes.Buffer
+
 	gz := gzip.NewWriter(&b)
+	defer func() {
+		_ = gz.Close()
+	}()
+
 	if _, err := gz.Write(s); err != nil {
 		return nil, "", err
 	}

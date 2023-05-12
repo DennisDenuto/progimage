@@ -17,8 +17,7 @@ type NewAPIServerOpts struct {
 	// BindPort is the port on which to serve HTTPS with authentication and authorization
 	BindPort int
 
-	APIRequestTimeout int
-	logger            logr.Logger
+	logger logr.Logger
 
 	Done context.Context
 }

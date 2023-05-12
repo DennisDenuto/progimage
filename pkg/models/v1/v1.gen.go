@@ -17,6 +17,7 @@ import (
 	"strings"
 
 	"github.com/deepmap/oapi-codegen/pkg/runtime"
+	openapi_types "github.com/deepmap/oapi-codegen/pkg/types"
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/gin-gonic/gin"
 )
@@ -32,6 +33,14 @@ type ErrorResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
+
+// UploadImageMultipartBody defines parameters for UploadImage.
+type UploadImageMultipartBody struct {
+	File *openapi_types.File `json:"file,omitempty"`
+}
+
+// UploadImageMultipartRequestBody defines body for UploadImage for multipart/form-data ContentType.
+type UploadImageMultipartRequestBody UploadImageMultipartBody
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -469,15 +478,15 @@ func RegisterHandlersWithOptions(router *gin.Engine, si ServerInterface, options
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/8xTzY7bPAx8FYHfd/TGTru96LZFeshtUbSnRQ6KRTta2KJK0SmCIO9eSI43vyhaoCh6",
-	"skBKM+TMeA819YE8eomg9xDrDfYmH59YXGNqSefAFJDFYe5Y12LMddkFBA1R2PkWDgU4e6d8KKYKrV+x",
-	"lnTxEzPxZ4yBfMRbiposniE5L9gip4c9xmhavE/D+G1wjBb0ywhxur+6GSI9cL6hvBLGml0QRx40fNmg",
-	"enpeKouN8y4VVUOsAlPr+gRWgDjpEtgzU7s81rbIcQSYz6pZ9WC6sDHzNDQF9CY40PB+Vs3mUEAwssmb",
-	"liNiUoBGUS9nGUJHxqqJN4lkUmtpQcPX3Jz40/YY5SPZ3aihF/QZMr8ug29PHqdTQ9wbAQ1r5w3voLiR",
-	"dBR1dCmP+66qrrBNCJ2r80zla0wzn1P8z9iAhv/KU87KY8jKt4Rlmsu141DXGGMzdOpt5aTkhz/If5nB",
-	"O0Ok2LE3ncJ0MycsDn2fpLoyJrVGJ8t9/iwXh0Tf4h1LLX33PzF1cWxPtgbDpkdBjqBfrrGWC0WNkg2O",
-	"YEpIrVFNDGghZRx0zhsU4E2f/6dxRDj/Y4QHLM6Uu47C6reSQLWgPERhND3o/a8b/Fg9/kWDs2aeRDU0",
-	"ePtvBewqJvl5RN5OQRi4Aw2lCa7czuGwOvwIAAD//+2Yv3TNBQAA",
+	"H4sIAAAAAAAC/8xTTW/bMAz9KwK3oxs7W3fRrUN3yK0YtlPRg2rRjgpb1Cg6QxD4vw+S4+YT+wCGYScb",
+	"pPT4+N7TDmrqA3n0EkHvINZr7E3+vWNxjakl/QemgCwOc8e6FmOuyzYgaIjCzrcwFuDslfJYzBV6fsFa",
+	"0sFPzMSfMQbyES9H1GTxCMl5wRY5XewxRtPi9TGM3wbHaEE/ThCH808XJNIF5xvKK2Gs2QVx5EHDlzWq",
+	"u4eVstg471JRNcQqMLWuT2AFiJMugT0wtat9bYMcJ4DlolpUN6YLa7NMpCmgN8GBhveLarGEAoKRdd60",
+	"nBCTAjSJesplCB0Zq+a5SSSTWisLGr7m5jw/bY9RPpLdThp6QZ8h+6ETFwxL2RD3N9aIObh9qX7juswo",
+	"HTYCGp6dN7yF4tfOjpMNk68Z7F1VnbExIXSuzluULzFteUzlLWMDGt6Uh2SW+1iWr5nMY06FikNdY4zN",
+	"0KlXkZL2H/7i/NPUXiGRgsredArTySxQHPo+iXdmZWpN3pe7/Fndj2l8i1dCYOm7/0kM7vftOQjBsOlR",
+	"kCPox3Os1b2iRskaJzAlpJ5RzRPQQnoVoHNCoQBv+vwCJ4pw/MaEByyOlDsPx9MfJYFqQbmJwmh60Lvf",
+	"N/i2uv2HBmfNPIlqaPD2/wrYWUzy9Yi8mYMwcAcaShNcuVnC+DT+CAAA//8/2uJ1/wUAAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

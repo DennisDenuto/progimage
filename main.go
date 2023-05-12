@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"github.com/go-logr/stdr"
-	apiserver2 "github.com/progimage/pkg/apiserver"
+	api "github.com/progimage/pkg/apiserver"
 	"github.com/progimage/pkg/events"
-	image2 "github.com/progimage/pkg/image"
+	img "github.com/progimage/pkg/image"
 	"github.com/progimage/pkg/transformations"
 	"golang.org/x/net/context"
 	"log"
@@ -30,11 +30,6 @@ func main() {
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
-	em := events.NewInMemoryEvents()
-	localFS := image2.LocalFS{
-		BasePath: opts.LocalFSBasePath,
-	}
-
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	go func() {
 		<-sigs
@@ -42,16 +37,25 @@ func main() {
 		cancelFunc()
 	}()
 
+	em := events.NewInMemoryEvents()
+	localFS := img.LocalFS{
+		BasePath: opts.LocalFSBasePath,
+	}
+
+	// Init and run Image Transformers
 	transformImage := transformations.NewLocalTransformImage(ctx, logger, localFS, em)
 	transformImage.Run()
 
-	localFileMgr := image2.NewLocalFileManager(localFS, em)
-	svc := apiserver2.V1Service{
+	localIDGenerator := &img.IdGeneratorMemory{}
+	localFileMgr := img.NewFileManager(localFS, em, localIDGenerator)
+	svc := api.V1Service{
 		Uploader:   localFileMgr,
 		Downloader: localFileMgr,
+		Logger:     logger,
 	}
 
-	server := apiserver2.NewAPIServer(apiserver2.NewAPIServerOpts{
+	// Init and run http server
+	server := api.NewAPIServer(api.NewAPIServerOpts{
 		BindPort: opts.Port,
 		Done:     ctx,
 	}, svc)
