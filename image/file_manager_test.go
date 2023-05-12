@@ -12,7 +12,7 @@ import (
 
 func TestUpload(t *testing.T) {
 	baseDir := t.TempDir()
-	uploader := image.NewLocalFileUploader(baseDir)
+	uploader := image.NewLocalFileManager(baseDir, nil)
 
 	uploadResponse, err := uploader.Upload(image.ImageRequest{
 		Name: "some-file",
