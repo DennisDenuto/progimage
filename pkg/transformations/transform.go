@@ -3,22 +3,22 @@ package transformations
 import (
 	"fmt"
 	"github.com/go-logr/logr"
-	"github.com/progimage/events"
-	"github.com/progimage/image"
+	"github.com/progimage/pkg/events"
+	image2 "github.com/progimage/pkg/image"
 	"golang.org/x/net/context"
 	"io"
 )
 
 type TransformImage struct {
 	eventManager events.FileEvents
-	fs           image.FS
+	fs           image2.FS
 	transformers []Transformer
 	logger       logr.Logger
 
 	stop context.Context
 }
 
-func NewLocalTransformImage(ctx context.Context, logger logr.Logger, fs image.LocalFS, em events.FileEvents) *TransformImage {
+func NewLocalTransformImage(ctx context.Context, logger logr.Logger, fs image2.LocalFS, em events.FileEvents) *TransformImage {
 	return &TransformImage{
 		eventManager: em,
 		fs:           fs,

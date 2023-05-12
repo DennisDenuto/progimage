@@ -1,7 +1,7 @@
 package events_test
 
 import (
-	"github.com/progimage/events"
+	events2 "github.com/progimage/pkg/events"
 	"github.com/stretchr/testify/require"
 	"testing"
 	"time"
@@ -10,11 +10,11 @@ import (
 func TestEmitEvent(t *testing.T) {
 	id := "1"
 
-	memoryEvents := events.InMemoryEvents{
-		Store:    map[string][]events.State{},
-		Watchers: map[string][]chan events.State{},
+	memoryEvents := events2.InMemoryEvents{
+		Store:    map[string][]events2.State{},
+		Watchers: map[string][]chan events2.State{},
 	}
-	state := events.State{
+	state := events2.State{
 		Val:       "some-val",
 		Timestamp: time.Time{},
 	}
@@ -35,7 +35,7 @@ func TestEmitEvent(t *testing.T) {
 		require.True(t, found)
 		memoryEvents.Emit(id, state)
 
-		var watchedState events.State
+		var watchedState events2.State
 		require.Eventually(t, func() bool {
 			watchedState = <-watch
 			return true

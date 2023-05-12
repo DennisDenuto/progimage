@@ -6,7 +6,7 @@ import (
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/go-logr/logr"
-	v1 "github.com/progimage/models/v1"
+	"github.com/progimage/pkg/models/v1"
 	"net/http"
 	"os"
 )

@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"github.com/go-logr/stdr"
-	"github.com/progimage/apiserver"
-	"github.com/progimage/events"
-	"github.com/progimage/image"
-	"github.com/progimage/transformations"
+	apiserver2 "github.com/progimage/pkg/apiserver"
+	"github.com/progimage/pkg/events"
+	image2 "github.com/progimage/pkg/image"
+	"github.com/progimage/pkg/transformations"
 	"golang.org/x/net/context"
 	"log"
 	"os"
@@ -31,7 +31,7 @@ func main() {
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
 	em := events.NewInMemoryEvents()
-	localFS := image.LocalFS{
+	localFS := image2.LocalFS{
 		BasePath: opts.LocalFSBasePath,
 	}
 
@@ -45,13 +45,13 @@ func main() {
 	transformImage := transformations.NewLocalTransformImage(ctx, logger, localFS, em)
 	transformImage.Run()
 
-	localFileMgr := image.NewLocalFileManager(localFS, em)
-	svc := apiserver.V1Service{
+	localFileMgr := image2.NewLocalFileManager(localFS, em)
+	svc := apiserver2.V1Service{
 		Uploader:   localFileMgr,
 		Downloader: localFileMgr,
 	}
 
-	server := apiserver.NewAPIServer(apiserver.NewAPIServerOpts{
+	server := apiserver2.NewAPIServer(apiserver2.NewAPIServerOpts{
 		BindPort: opts.Port,
 		Done:     ctx,
 	}, svc)

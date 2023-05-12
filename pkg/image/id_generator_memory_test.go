@@ -1,7 +1,7 @@
 package image_test
 
 import (
-	"github.com/progimage/image"
+	"github.com/progimage/pkg/image"
 	"github.com/stretchr/testify/require"
 	"sync"
 	"testing"

@@ -1,7 +1,7 @@
 package image
 
 import (
-	"github.com/progimage/events"
+	events2 "github.com/progimage/pkg/events"
 	"io"
 	"time"
 )
@@ -15,10 +15,10 @@ type FileManager struct {
 	fs FS
 
 	uploadId     UploadId
-	eventManager events.FileEvents
+	eventManager events2.FileEvents
 }
 
-func NewLocalFileManager(fs FS, em *events.InMemoryEvents) *FileManager {
+func NewLocalFileManager(fs FS, em *events2.InMemoryEvents) *FileManager {
 	return &FileManager{
 		fs:           fs,
 		uploadId:     &IdGeneratorMemory{},
@@ -36,7 +36,7 @@ func (l *FileManager) Upload(request ImageRequest) (ImageResponse, error) {
 		return ImageResponse{}, err
 	}
 
-	l.eventManager.Emit(id, events.State{
+	l.eventManager.Emit(id, events2.State{
 		ID:        id,
 		Val:       "UPLOAD_START",
 		Timestamp: time.Now().UTC(),
@@ -50,7 +50,7 @@ func (l *FileManager) Upload(request ImageRequest) (ImageResponse, error) {
 func (l *FileManager) upload(id string, request ImageRequest) {
 	err := l.fs.Write(id, request.Body)
 	if err != nil {
-		l.eventManager.Emit(id, events.State{
+		l.eventManager.Emit(id, events2.State{
 			ID:        id,
 			Val:       "UPLOAD_ERROR",
 			Timestamp: time.Now().UTC(),
@@ -61,7 +61,7 @@ func (l *FileManager) upload(id string, request ImageRequest) {
 		return
 	}
 
-	l.eventManager.Emit(id, events.State{
+	l.eventManager.Emit(id, events2.State{
 		ID:        id,
 		Val:       "UPLOAD_SUCCESS",
 		Timestamp: time.Now().UTC(),

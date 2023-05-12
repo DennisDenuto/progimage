@@ -3,15 +3,15 @@ package apiserver
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/progimage/image"
+	image2 "github.com/progimage/pkg/image"
 	"io"
 	"log"
 	"net/http"
 )
 
 type V1Service struct {
-	Uploader   image.Uploader
-	Downloader image.Downloader
+	Uploader   image2.Uploader
+	Downloader image2.Downloader
 }
 
 func (v V1Service) UploadImage(ctx *gin.Context) {
@@ -28,7 +28,7 @@ func (v V1Service) UploadImage(ctx *gin.Context) {
 	}
 	log.Println(file.Filename)
 	// Upload the file to specific dst.
-	uploadID, err := v.Uploader.Upload(image.ImageRequest{
+	uploadID, err := v.Uploader.Upload(image2.ImageRequest{
 		Name: file.Filename,
 		Body: f,
 		Metadata: map[string]string{

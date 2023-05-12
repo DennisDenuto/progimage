@@ -2,7 +2,7 @@ package image_test
 
 import (
 	"bytes"
-	"github.com/progimage/image"
+	image2 "github.com/progimage/pkg/image"
 	"github.com/stretchr/testify/require"
 	"os"
 	"path/filepath"
@@ -12,9 +12,9 @@ import (
 
 func TestUpload(t *testing.T) {
 	baseDir := t.TempDir()
-	uploader := image.NewLocalFileManager(baseDir, nil)
+	uploader := image2.NewLocalFileManager(baseDir, nil)
 
-	uploadResponse, err := uploader.Upload(image.ImageRequest{
+	uploadResponse, err := uploader.Upload(image2.ImageRequest{
 		Name: "some-file",
 		Body: bytes.NewBuffer([]byte{}),
 		Metadata: map[string]string{
