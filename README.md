@@ -12,9 +12,13 @@ curl -X POST http://localhost:8080/api/v1/image \
 1. Downloading an image:
 example curl request:
 ```
-curl -v curl -X GET http://127.0.0.1:8080/api/v1/image/1  
+curl -v -X GET http://localhost:8080/api/v1/image/1  
 ```
 
 
 ### Run tests:
 1. ./hack/test.sh
+
+
+### Run as a docker container
+1. ./hack/run_locally.sh

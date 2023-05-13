@@ -14,11 +14,10 @@ import (
 const streamChunkBytes = 32 * 1024
 
 type NewAPIServerOpts struct {
-	// BindPort is the port on which to serve HTTPS with authentication and authorization
+	// BindPort is the port on which to bind to
 	BindPort int
-
-	logger logr.Logger
-
+	logger   logr.Logger
+	// Used to determine when to gracefully shutdown the server
 	Done context.Context
 }
 

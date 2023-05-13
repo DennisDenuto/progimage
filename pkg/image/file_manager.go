@@ -40,6 +40,7 @@ func (l *FileManager) Upload(request ImageRequest) (ImageResponse, error) {
 		ID:        id,
 		Val:       "UPLOAD_START",
 		Timestamp: time.Now().UTC(),
+		Metadata:  request.Metadata,
 	})
 
 	go l.upload(id, request)
@@ -65,5 +66,6 @@ func (l *FileManager) upload(id string, request ImageRequest) {
 		ID:        id,
 		Val:       "UPLOAD_SUCCESS",
 		Timestamp: time.Now().UTC(),
+		Metadata:  request.Metadata,
 	})
 }
